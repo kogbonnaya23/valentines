@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Will You Be My Valentine?</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ffdde1, #ee9ca7);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow: hidden;
+    }
+
+    .wrapper {
+      position: relative;
+      text-align: center;
+      color: #fff;
+      padding: 24px 32px;
+      border-radius: 20px;
+      background: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+      backdrop-filter: blur(14px);
+    }
+
+    .question {
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+      margin-bottom: 24px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      margin-top: 8px;
+      position: relative;
+      height: 60px;
+    }
+
+    button {
+      border: none;
+      padding: 10px 26px;
+      font-size: 1.1rem;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    }
+
+    #yesBtn {
+      background: #22c55e;
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(34, 197, 94, 0.6);
+    }
+
+    #yesBtn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 14px 32px rgba(34, 197, 94, 0.75);
+    }
+
+    #noBtn {
+      position: absolute;
+      background: #ef4444;
+      color: #fff;
+      box-shadow: 0 10px 24px rgba(239, 68, 68, 0.6);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #noBtn.floating {
+      animation: float 2.2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%   { transform: translate(-50%, 0); }
+      50%  { transform: translate(-50%, -8px); }
+      100% { transform: translate(-50%, 0); }
+    }
+
+    /* Teddy popup */
+    .teddy-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+      z-index: 20;
+    }
+
+    .teddy-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .teddy-card {
+      background: #fff;
+      color: #333;
+      padding: 26px 30px 22px;
+      border-radius: 24px;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+      position: relative;
+      transform: scale(0.7);
+      animation: popIn 0.35s ease forwards;
+    }
+
+    @keyframes popIn {
+      0%   { transform: scale(0.4); opacity: 0; }
+      70%  { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .teddy-img {
+      width: 220px;
+      height: auto;
+      margin: 0 auto 10px;
+      display: block;
+    }
+
+    .hearts {
+      font-size: 1.8rem;
+      color: #fb7185;
+      margin-bottom: 8px;
+    }
+
+    .teddy-text-main {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .teddy-text-sub {
+      font-size: 0.98rem;
+      color: #555;
+      margin-bottom: 14px;
+    }
+
+    .close-msg {
+      font-size: 0.85rem;
+      color: #888;
+    }
+
+    /* Floating hearts background */
+    .floating-heart {
+      position: fixed;
+      top: -40px;
+      width: 20px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      transform: rotate(-45deg);
+      border-radius: 4px;
+      animation: fall 9s linear infinite;
+      opacity: 0.8;
+      z-index: 0;
+    }
+
+    .floating-heart::before,
+    .floating-heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    .floating-heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .floating-heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(-45deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(120vh) rotate(-45deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .question {
+        font-size: 1.7rem;
+      }
+      button {
+        padding: 9px 18px;
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="question">Will you be my Valentine?</div>
+    <div class="buttons">
+      <button id="yesBtn">Yes 💖</button>
+      <button id="noBtn" class="floating">No 😅</button>
+    </div>
+  </div>
+
+  <!-- Teddy bear popup -->
+  <div class="teddy-overlay" id="teddyOverlay">
+    <div class="teddy-card">
+      <!-- Use your teddy image here -->
+      <img src="teddy.png" alt="Cute teddy bear" class="teddy-img" />
+      <div class="hearts">💗💗💗</div>
+      <div class="teddy-text-main">Yay! You’re my Valentine!</div>
+      <div class="teddy-text-sub">
+        This little bear is now on permanent cuddle duty.<br>
+        Thank you for saying yes!
+      </div>
+      <div class="close-msg">(Click anywhere to close)</div>
+    </div>
+  </div>
+
+  <script>
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const teddyOverlay = document.getElementById("teddyOverlay");
+
+    // Make the "No" button run away
+    function moveNoButton(event) {
+      const rect = noBtn.getBoundingClientRect();
+      const btnCenterX = rect.left + rect.width / 2;
+      const btnCenterY = rect.top + rect.height / 2;
+
+      const offsetX = event.clientX - btnCenterX;
+      const offsetY = event.clientY - btnCenterY;
+
+      const distance = Math.sqrt(offsetX ** 2 + offsetY ** 2);
+      const threshold = 110;
+
+      if (distance < threshold) {
+        const padding = 40;
+        const newLeft = padding + Math.random() * (window.innerWidth - rect.width - padding * 2);
+        const newTop = padding + Math.random() * (window.innerHeight - rect.height - padding * 2);
+
+        noBtn.style.left = newLeft + "px";
+        noBtn.style.top = newTop + "px";
+        noBtn.style.transform = "translate(0, 0)";
+      }
+    }
+
+    document.addEventListener("mousemove", moveNoButton);
+
+    noBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const padding = 40;
+      const rect = noBtn.getBoundingClientRect();
+      const newLeft = padding + Math.random() * (window.innerWidth - rect.width - padding * 2);
+      const newTop = padding + Math.random() * (window.innerHeight - rect.height - padding * 2);
+      noBtn.style.left = newLeft + "px";
+      noBtn.style.top = newTop + "px";
+    });
+
+    // Show teddy when "Yes" is clicked
+    yesBtn.addEventListener("click", () => {
+      teddyOverlay.classList.add("show");
+    });
+
+    // Hide teddy when overlay is clicked
+    teddyOverlay.addEventListener("click", () => {
+      teddyOverlay.classList.remove("show");
+    });
+
+    // Floating hearts background
+    const HEART_COUNT = 16;
+
+    function createFloatingHeart() {
+      const heart = document.createElement("div");
+      heart.className = "floating-heart";
+      const startLeft = Math.random() * 100;
+      const delay = Math.random() * 10;
+      const scale = 0.5 + Math.random() * 0.9;
+      heart.style.left = startLeft + "vw";
+      heart.style.animationDelay = delay + "s";
+      heart.style.transform = `scale(${scale}) rotate(-45deg)`;
+      document.body.appendChild(heart);
+
+      heart.addEventListener("animationend", () => {
+        heart.remove();
+        createFloatingHeart();
+      });
+    }
+
+    for (let i = 0; i < HEART_COUNT; i++) {
+      createFloatingHeart();
+    }
+  </script>
+</body>
+</html>
