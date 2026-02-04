@@ -227,7 +227,7 @@
   <div class="teddy-overlay" id="teddyOverlay">
     <div class="teddy-card">
       <!-- Use your teddy image here -->
-      <img src="teddy.png" alt="Cute teddy bear" class="teddy-img" />
+      <img src="img_0804.jpeg" alt="Cute teddy bear" class="teddy-img" />
       <div class="hearts">💗💗💗</div>
       <div class="teddy-text-main">Yay! You’re my Valentine!</div>
       <div class="teddy-text-sub">
